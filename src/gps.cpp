@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "gps.hpp" 
 
+TinyGPSPlus gps; //TinyGPS object
+
 void readGPS(){
 
   Serial.printf("%d GPS bytes available\n", Serial2.available());

@@ -1,6 +1,15 @@
 #include <Arduino.h>
 #include "imu.hpp" 
 
+// I2C Address of MPU9250
+const uint8_t MPU = 0x68;
+
+// Caliberation Time Assigned
+unsigned long delay_cal = 3000;
+
+float rawaccX = 0, rawaccY = 0, rawaccZ = 0, rawgyroX = 0, rawgyroY = 0, rawgyroZ = 0;
+float tempC, gyroX, gyroY, gyroZ, accX, accY, accZ, calgyroX, calgyroY, calgyroZ, calaccX, calaccY, calaccZ;
+
 void i2cWrite(uint8_t address, uint8_t reg, uint8_t val) {
   Wire.beginTransmission(address);
   Wire.write(reg);
@@ -14,7 +23,7 @@ int16_t i2cRead(uint8_t address, int8_t reg) {
   Wire.beginTransmission(address);
   Wire.write(reg);
   Wire.endTransmission(false);
-  Wire.requestFrom(address, 2, true);
+  Wire.requestFrom(static_cast<uint8_t>(address), 2, true);
   temp = (Wire.read() << 8 | Wire.read());
   return temp;
 }
